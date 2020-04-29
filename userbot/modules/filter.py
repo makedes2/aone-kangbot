@@ -39,6 +39,10 @@ async def filter_incoming_handler(handler):
 
 @register(outgoing=True, pattern=r"^.filter ((@)?\w*)")
 async def add_new_filter(new_handler):
+    #Prevent Channel Bug to control filter
+    if new_handler.is_channel and not new_handler.is_group:
+        await new_handler.edit("`Filter Commad isn't permitted on channels`")
+        return
     """ For .filter command, allows adding new filters in a chat """
     try:
         from userbot.modules.sql_helper.filter_sql import add_filter
