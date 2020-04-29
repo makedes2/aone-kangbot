@@ -15,6 +15,10 @@ heroku_conn = heroku3.from_key(HEROKU_API_KEY)
 @register(pattern="^.hlist(?: |$)(.*)", outgoing=True)
 async def heroku_list(list):
     """ Getting Information From Heroku Account """
+    
+    if list.is_channel and not list.is_group:
+        await list.edit("`hlist isn't permitted on channels`")
+        return
     if HEROKU_API_KEY is not None:
         heroku_str = list.pattern_match.group(1)
         if heroku_str == "app":
