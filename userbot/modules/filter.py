@@ -84,6 +84,10 @@ async def add_new_filter(new_handler):
 
 @register(outgoing=True, pattern=r"^.stop ((@)?\w*)")
 async def remove_a_filter(r_handler):
+    #Prevent Channel Bug to control stop
+    if r_handler.is_channel and not r_handler.is_group:
+        await r_handler.edit("`Stop Commad isn't permitted on channels`")
+        return
     """ For .stop command, allows you to remove a filter from a chat. """
     try:
         from userbot.modules.sql_helper.filter_sql import remove_filter
@@ -100,6 +104,10 @@ async def remove_a_filter(r_handler):
 
 @register(outgoing=True, pattern="^.rmbotfilters (.*)")
 async def kick_marie_filter(event):
+    #Prevent Channel Bug to control rmbotfilters
+    if event.is_channel and not event.is_group:
+        await event.edit("`rmbotfilters Commad isn't permitted on channels`")
+        return
     """ For .rmfilters command, allows you to kick all \
         Marie(or her clones) filters from a chat. """
     cmd = event.text[0]
@@ -127,6 +135,10 @@ async def kick_marie_filter(event):
 
 @register(outgoing=True, pattern="^.filters$")
 async def filters_active(event):
+    #Prevent Channel Bug to control filters
+    if event.is_channel and not event.is_group:
+        await event.edit("`Filters Commad isn't permitted on channels`")
+        return
     """ For .filters command, lists all of the active filters in a chat. """
     try:
         from userbot.modules.sql_helper.filter_sql import get_filters
