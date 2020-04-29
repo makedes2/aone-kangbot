@@ -54,6 +54,9 @@ async def heroku_list(list):
 @register(outgoing=True, pattern=r"^.(set|del) var(?: |$)(.*)")
 async def variable(var):
     """ Manage most of ConfigVars setting, set new var, or delete var... """
+    if var.is_channel and not var.is_group:
+        await var.edit("`Heroku Set isn't permitted on channels`")
+        return
     if HEROKU_APP_NAME is not None:
         app = heroku_conn.app(HEROKU_APP_NAME)
     else:
